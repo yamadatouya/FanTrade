@@ -1,0 +1,175 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+ 
+body {
+    font-family: Arial, sans-serif;
+}
+ 
+.container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+ 
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+}
+ 
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+ 
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+ 
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+ 
+.content {
+    background-color:   #BDD7EE;
+    flex-grow: 1;
+    padding: 20px;
+}
+.heart-icon {
+    position: absolute;
+    bottom: 20px;
+    right: 5%;
+    width: 60px;
+    height: 60px;
+    transform: scale(2); /* 大きさを2倍に */
+    transform-origin: center; /* 拡大する際に中心を基準にする */
+}
+
+ 
+.heart-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* 画像の縦横比を保つ */
+}
+
+ 
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+.calendar {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+        .calendar-header h2 {
+            margin: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            width: 14.28%;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        td {
+            background-color: #fff;
+            cursor: pointer;
+        }
+        td:hover {
+            background-color: #e0e0e0;
+        }
+        .current-day {
+            background-color: #ffeb3b;
+        }
+        .prev-btn, .next-btn {
+            cursor: pointer;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .prev-btn:hover, .next-btn:hover {
+            background-color: #0056b3;
+        }
+        #modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        #modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 400px;
+            text-align: left;
+        }
+        .modal-close {
+            float: right;
+            cursor: pointer;
+            color: #ff0000;
+        }
+        #imagePreview {
+            width: 100%;
+            height: auto;
+            margin-top: 10px;
+            display: none;
+        }
+
+/* スクロール追従ボタンのスタイル */
+.sticky-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+.sticky-button:hover {
+    background-color: #0056b3;
+}

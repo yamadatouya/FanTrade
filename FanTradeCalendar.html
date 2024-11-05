@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FanTrade - 予定登録付きカレンダー</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- FanTradeのヘッダーとナビゲーション -->
+        <header>
+            <div class="logo">FanTrade</div>
+            <nav>
+                <ul>
+                    <li><a href="search.html">検索</a></li>
+                    <li><a href="#">投稿</a></li>
+                    <li><a href="FanTradeCalendar.html">カレンダー</a></li>
+                    <li><a href="#">交渉中</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <div class="content">
+            <!-- カレンダー機能 -->
+            <div class="calendar">
+                <div class="calendar-header">
+                    <button class="prev-btn" onclick="changeMonth(-1)">前の月</button>
+                    <h2 id="monthYear"></h2>
+                    <button class="next-btn" onclick="changeMonth(1)">次の月</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>日</th>
+                            <th>月</th>
+                            <th>火</th>
+                            <th>水</th>
+                            <th>木</th>
+                            <th>金</th>
+                            <th>土</th>
+                        </tr>
+                    </thead>
+                    <tbody id="calendarBody">
+                        <!-- カレンダーの日付がここに挿入される -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- モーダルウィンドウ（予定登録フォーム） -->
+            <div id="modal">
+                <div id="modal-content">
+                    <span class="modal-close" onclick="closeModal()">×</span>
+                    <h3 id="selectedDate"></h3>
+                    <form id="eventForm">
+                        <label for="memo">メモ:</label><br>
+                        <textarea id="memo" rows="3" cols="40"></textarea><br><br>
+                        <label for="image">画像URL:</label><br>
+                        <input type="text" id="image" placeholder="画像URLを入力" oninput="updateImagePreview()"><br><br>
+                        <img id="imagePreview" alt="画像プレビュー"><br><br>
+                        <label for="url">リンクURL:</label><br>
+                        <input type="text" id="url" placeholder="リンクURLを入力"><br><br>
+                        <button type="button" onclick="saveEvent()">保存</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ハートアイコン -->
+        <div class="heart-icon">
+            <img src="image/heart-icon.png" alt="Heart Icon">
+        </div>
+    </div>
+
+    <script>
+        let currentDate = new Date();
+        let events = {};
+
+        function renderCalendar() {
+            const monthYear = document.getElementById("monthYear");
+            const calendarBody = document.getElementById("calendarBody");
+
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+
+            // 月と年を表示
+            monthYear.textContent = `${year}年 ${month + 1}月`;
+
+            // 現在の月の最初の日と最後の日
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+
+            // カレンダーのテーブルをリセット
+            calendarBody.innerHTML = "";
+
+            // 最初の曜日まで空のセルを追加
+            let row = document.createElement("tr");
+            for (let i = 0; i < firstDay.getDay(); i++) {
+                let emptyCell = document.createElement("td");
+                row.appendChild(emptyCell);
+            }
+
+            // 月の日付を追加
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                let cell = document.createElement("td");
+                cell.textContent = day;
+                cell.onclick = () => openModal(year, month + 1, day);
+
+                // 今日の日付を強調表示
+                if (day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
+                    cell.classList.add("current-day");
+                }
+
+                row.appendChild(cell);
+
+                // 土曜日で行を終わる
+                if ((firstDay.getDay() + day) % 7 === 0) {
+                    calendarBody.appendChild(row);
+                    row = document.createElement("tr");
+                }
+            }
+
+            // 最後の行を追加
+            if (row.children.length > 0) {
+                calendarBody.appendChild(row);
+            }
+        }
+
+        function changeMonth(delta) {
+            currentDate.setMonth(currentDate.getMonth() + delta);
+            renderCalendar();
+        }
+
+        function openModal(year, month, day) {
+            const selectedDate = document.getElementById("selectedDate");
+            selectedDate.textContent = `${year}年${month}月${day}日`;
+            document.getElementById("modal").style.display = "flex";
+
+            const eventKey = `${year}-${month}-${day}`;
+            if (events[eventKey]) {
+                document.getElementById("memo").value = events[eventKey].memo;
+                document.getElementById("image").value = events[eventKey].image;
+                document.getElementById("url").value = events[eventKey].url;
+                updateImagePreview();
+            } else {
+                document.getElementById("eventForm").reset();
+                document.getElementById("imagePreview").style.display = "none"; // プレビュー非表示
+            }
+        }
+
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+
+        function saveEvent() {
+            const selectedDate = document.getElementById("selectedDate").textContent;
+            const [year, month, day] = selectedDate.match(/\d+/g);
+            const memo = document.getElementById("memo").value;
+            const image = document.getElementById("image").value;
+            const url = document.getElementById("url").value;
+
+            const eventKey = `${year}-${month}-${day}`;
+            events[eventKey] = { memo, image, url };
+
+            closeModal();
+            alert("予定が保存されました！");
+        }
+
+        function updateImagePreview() {
+            const imageUrl = document.getElementById("image").value;
+            const imagePreview = document.getElementById("imagePreview");
+
+            if (imageUrl) {
+                imagePreview.src = imageUrl;
+                imagePreview.style.display = "block";
+            } else {
+                imagePreview.style.display = "none";
+            }
+        }
+
+        // 初期カレンダーの描画
+        renderCalendar();
+    </script>
+    <button class="sticky-button" onclick="scrollToTop()">トップに戻る</button>
+    <script src="main.js"></script>
+</body>
+</html>
